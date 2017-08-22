@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="Model\Block.cs" />
     <Compile Include="Model\Coord.cs" />
+    <Compile Include="Model\Eatable.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\Snake.cs" />
     <Compile Include="Program.cs" />

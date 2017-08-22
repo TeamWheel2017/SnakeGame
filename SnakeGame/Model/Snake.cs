@@ -7,84 +7,94 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Model
 {
-	class SnakeEnumerator : IEnumerator<Block>
-	{
-		private readonly Block head;
-		private Block current;
-
-		public Block Current
-		{
-			get { return current; }
-		}
-
-		object IEnumerator.Current
-		{
-			get { return Current; }
-		}
-
-		public SnakeEnumerator(Block head)
-		{
-			this.head = head;
-			current = head;
-		}
-
-		public void Dispose() { }
-
-		public bool MoveNext()
-		{
-			if (current == head)
-			{
-				return true;
-			}
-
-			if (current.Next != null)
-			{
-				current = current.Next;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		public void Reset()
-		{
-			current = head;
-		}
-	}
-
-	public class Snake : IEnumerable<Block>
+	public class Snake
 	{
 		private readonly Game game;
-		private readonly Block head;
-		private Block tail;
-		private int length;
+		private readonly List<Block> body;
 
-		public Block Head { get => head; }
-		public int Length { get => length; }
+		public Block Head { get => body[0]; }
 
 		public Snake(Game game)
 		{
 			this.game = game;
 
-			//snake 초기화
-			this.head = new Block(new Coord(game.Setting.BoardWidth, game.Setting.BoardHeight), Direction.Left, null);
-			Block temp = new Block(head);
-			tail = new Block(temp);
-			length = 3;
+			body = new List<Block>
+			{
+				new Block(new Coord(game.Setting.BoardWidth / 2, game.Setting.BoardHeight / 2), Direction.Left),
+				new Block(new Coord(game.Setting.BoardWidth / 2 + 1, game.Setting.BoardHeight / 2), Direction.Left),
+				new Block(new Coord(game.Setting.BoardWidth / 2 + 2, game.Setting.BoardHeight / 2), Direction.Left),
+			};
+		}
+		
+		public void Move()
+		{
+			//이동
+			foreach(var item in body)
+			{
+				if(game.Setting.IsInfBoard == true)
+				{
+					switch(item.Dir)
+					{
+						case Direction.Up:
+							item.Pos.Y = (item.Pos.Y + game.Setting.BoardHeight - 1) % game.Setting.BoardHeight;
+							break;
+						case Direction.Down:
+							item.Pos.Y = (item.Pos.Y + 1) % game.Setting.BoardHeight;
+							break;
+						case Direction.Left:
+							item.Pos.X = (item.Pos.X + game.Setting.BoardWidth - 1) % game.Setting.BoardWidth;
+							break;
+						case Direction.Right:
+							item.Pos.X = (item.Pos.X + 1) % game.Setting.BoardWidth;
+							break;
+					}
+				}
+				else
+				{
+					switch (item.Dir)
+					{
+						case Direction.Up:
+							item.Pos.Y--;
+							break;
+						case Direction.Down:
+							item.Pos.Y++;
+							break;
+						case Direction.Left:
+							item.Pos.X--;
+							break;
+						case Direction.Right:
+							item.Pos.X++;
+							break;
+					}
+				}
+			}
+
+			//방향 전달
+			for(int i = body.Count - 1; i > 0; i--)
+			{
+				body[i].Dir = body[i - 1].Dir;
+			}
 		}
 
-		#region IEnumerable 구현부
-		public IEnumerator<Block> GetEnumerator()
+		public void AddNewBlock()
 		{
-			return new SnakeEnumerator(head);
-		}
+			Block tail = body[body.Count - 1];
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return (IEnumerator<Block>)GetEnumerator();
+			switch(tail.Dir)
+			{
+				case Direction.Up:
+					body.Add(new Block(new Coord(tail.Pos.X, tail.Pos.Y + 1), tail.Dir));
+					break;
+				case Direction.Down:
+					body.Add(new Block(new Coord(tail.Pos.X, tail.Pos.Y - 1), tail.Dir));
+					break;
+				case Direction.Left:
+					body.Add(new Block(new Coord(tail.Pos.X + 1, tail.Pos.Y), tail.Dir));
+					break;
+				case Direction.Right:
+					body.Add(new Block(new Coord(tail.Pos.X - 1, tail.Pos.Y), tail.Dir));
+					break;
+			}
 		}
-		#endregion
 	}
 }

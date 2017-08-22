@@ -33,5 +33,30 @@ namespace SnakeGame.Model
 			setting = new GameSetting(width, height, isInfBoard);
 			snake = new Snake(this);
 		}
+
+		public void Tick()
+		{
+			//TODO : 메서드 완성
+		}
+
+		public void MoveSnakeUp()
+		{
+			snake.Head.Dir = Direction.Up;
+		}
+
+		public void MoveSnakeDown()
+		{
+			snake.Head.Dir = Direction.Down;
+		}
+
+		public void MoveSnakeLeft()
+		{
+			snake.Head.Dir = Direction.Left;
+		}
+
+		public void MoveSnakeRight()
+		{
+			snake.Head.Dir = Direction.Right;
+		}
 	}
 }
