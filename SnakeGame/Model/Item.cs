@@ -6,15 +6,26 @@ using System.Threading.Tasks;
 
 namespace SnakeGame.Model
 {
-	public class Eatable
+	public enum ItemIdx
 	{
-		private readonly int idx;
+		//Foods
+		Food1, Food2, Food3, Food4, Food5, Food6, Food7,
+
+		//Item
+		ScoreMulti2, ScoreMulti4, TailCut3, TailCut5,
+
+		//debuf
+		Confusion, 
+	}
+
+	public class Item
+	{
+		private readonly ItemIdx idx;
 		private readonly Coord pos;
 		private int lifeSpan;
 		private int effectLifeSpan;
-		private readonly int score;
 
-		public int Idx { get => idx; }
+		public ItemIdx Idx { get => idx; }
 		public Coord Pos { get => pos; }
 		public int LifeSpan
 		{
@@ -26,23 +37,14 @@ namespace SnakeGame.Model
 			get { return effectLifeSpan; }
 			set { effectLifeSpan = value; }
 		}
-		public int Score { get => score; }
 
-		public Eatable(int idx, Coord pos, int lifeSpan, int effectLifeSpan, int score)
+		public Item(ItemIdx idx, Coord pos, int lifeSpan, int effectLifeSpan)
 		{
 			this.idx = idx;
 			this.pos = pos;
 			this.lifeSpan = lifeSpan;
 			this.effectLifeSpan = effectLifeSpan;
-			this.score = score;
 		}
-
-		public abstract void SetEffect();
-		public abstract void ResetEffect();
-
-
-		//TODO : Eatable 효과를 어디서 설정할지 결정하기
-		//Plan A. Eatable의 idx를 확인해서 Eatable Manager에서 설정/해제
-		//Plan B. Eatable이 직접 Set, Reset 메소드 사용하여 설정/해제
+		
 	}
 }

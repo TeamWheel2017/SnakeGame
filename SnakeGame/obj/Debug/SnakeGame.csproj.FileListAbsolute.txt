@@ -2,3 +2,12 @@ C:\Users\Administrator\Desktop\git\SnakeGame\SnakeGame\obj\Debug\SnakeGame.cspro
 C:\Users\Administrator\Desktop\git\SnakeGame\SnakeGame\obj\Debug\SnakeGame.Properties.Resources.resources
 C:\Users\Administrator\Desktop\git\SnakeGame\SnakeGame\obj\Debug\SnakeGame.csproj.GenerateResource.Cache
 C:\Users\Administrator\Desktop\git\SnakeGame\SnakeGame\obj\Debug\SnakeGame.csproj.CoreCompileInputs.cache
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.csprojResolveAssemblyReference.cache
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.Properties.Resources.resources
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.csproj.GenerateResource.Cache
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.csproj.CoreCompileInputs.cache
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\bin\Debug\SnakeGame.exe.config
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\bin\Debug\SnakeGame.exe
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\bin\Debug\SnakeGame.pdb
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.exe
+D:\Windows 8.1\Program Data\GitHub\SnakeGame\SnakeGame\obj\Debug\SnakeGame.pdb

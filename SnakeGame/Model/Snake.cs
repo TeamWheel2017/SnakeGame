@@ -96,5 +96,57 @@ namespace SnakeGame.Model
 					break;
 			}
 		}
+
+		public bool IsOnSnake(Coord pos)
+		{
+			foreach(var item in body)
+			{
+				if (item.Pos == pos)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public bool IsCollisionOccured()
+		{
+			for(int i = 1; i < body.Count; i++)
+			{
+				if(Head.Pos == body[i].Pos)
+				{
+					return true;
+				}
+			}
+
+			//border collision 확인
+			if(game.Setting.IsInfBoard == false)
+			{
+				if(Head.Pos.X < 0 || Head.Pos.X >= game.Setting.BoardWidth)
+				{
+					return true;
+				}
+
+				if(Head.Pos.Y < 0 || Head.Pos.Y >= game.Setting.BoardHeight)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public void CutTail(int length)
+		{
+			if (length > body.Count)
+			{
+				return;
+			}
+
+			for(int i = 0; i < length; i++)
+			{
+				body.RemoveAt(body.Count - 1 - i);
+			}
+		}
 	}
 }
