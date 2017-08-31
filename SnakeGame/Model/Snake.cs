@@ -25,15 +25,15 @@ namespace SnakeGame.Model
 				new Block(new Coord(game.Setting.BoardWidth / 2 + 2, game.Setting.BoardHeight / 2), Direction.Left),
 			};
 		}
-		
+
 		public void Move()
 		{
 			//이동
-			foreach(var item in body)
+			foreach (var item in body)
 			{
-				if(game.Setting.IsInfBoard == true)
+				if (game.Setting.IsInfBoard == true)
 				{
-					switch(item.Dir)
+					switch (item.Dir)
 					{
 						case Direction.Up:
 							item.Pos.Y = (item.Pos.Y + game.Setting.BoardHeight - 1) % game.Setting.BoardHeight;
@@ -70,7 +70,7 @@ namespace SnakeGame.Model
 			}
 
 			//방향 전달
-			for(int i = body.Count - 1; i > 0; i--)
+			for (int i = body.Count - 1; i > 0; i--)
 			{
 				body[i].Dir = body[i - 1].Dir;
 			}
@@ -80,7 +80,7 @@ namespace SnakeGame.Model
 		{
 			Block tail = body[body.Count - 1];
 
-			switch(tail.Dir)
+			switch (tail.Dir)
 			{
 				case Direction.Up:
 					body.Add(new Block(new Coord(tail.Pos.X, tail.Pos.Y + 1), tail.Dir));
@@ -99,7 +99,7 @@ namespace SnakeGame.Model
 
 		public bool IsOnSnake(Coord pos)
 		{
-			foreach(var item in body)
+			foreach (var item in body)
 			{
 				if (item.Pos == pos)
 				{
@@ -111,23 +111,23 @@ namespace SnakeGame.Model
 
 		public bool IsCollisionOccured()
 		{
-			for(int i = 1; i < body.Count; i++)
+			for (int i = 1; i < body.Count; i++)
 			{
-				if(Head.Pos == body[i].Pos)
+				if (Head.Pos == body[i].Pos)
 				{
 					return true;
 				}
 			}
 
 			//border collision 확인
-			if(game.Setting.IsInfBoard == false)
+			if (game.Setting.IsInfBoard == false)
 			{
-				if(Head.Pos.X < 0 || Head.Pos.X >= game.Setting.BoardWidth)
+				if (Head.Pos.X < 0 || Head.Pos.X >= game.Setting.BoardWidth)
 				{
 					return true;
 				}
 
-				if(Head.Pos.Y < 0 || Head.Pos.Y >= game.Setting.BoardHeight)
+				if (Head.Pos.Y < 0 || Head.Pos.Y >= game.Setting.BoardHeight)
 				{
 					return true;
 				}
@@ -138,12 +138,12 @@ namespace SnakeGame.Model
 
 		public void CutTail(int length)
 		{
-			if (length > body.Count)
+			if (length >= body.Count)
 			{
 				return;
 			}
 
-			for(int i = 0; i < length; i++)
+			for (int i = 0; i < length; i++)
 			{
 				body.RemoveAt(body.Count - 1 - i);
 			}

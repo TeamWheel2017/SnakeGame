@@ -9,7 +9,7 @@ namespace SnakeGame.Model
 	public class ItemManager
 	{
 		private readonly Game game;
-		private List<Item> notEatenItems;
+		private List<Item> uneatenItems;
 		private List<Item> eatenItems;
 
 		private int tickCounter;
@@ -17,26 +17,26 @@ namespace SnakeGame.Model
 		public ItemManager(Game game)
 		{
 			this.game = game;
-			notEatenItems = new List<Item>();
+			uneatenItems = new List<Item>();
 			eatenItems = new List<Item>();
 
 			tickCounter = 0;
 		}
 		
-		public void Tick()
+		public void ReduceLifeSpanAndCreateNewItem()
 		{
 			tickCounter++;
 
-			//notEatenItems LifeSpan 깎기
-			for (int i = notEatenItems.Count - 1; i >= 0; i--)
+			//uneatenItems LifeSpan 깎기
+			for (int i = uneatenItems.Count - 1; i >= 0; i--)
 			{
-				var current = notEatenItems[i];
+				var current = uneatenItems[i];
 
 				current.LifeSpan--;
 
 				if(current.LifeSpan == 0)
 				{
-					notEatenItems.Remove(current);
+					uneatenItems.Remove(current);
 				}
 			}
 
@@ -57,41 +57,42 @@ namespace SnakeGame.Model
 			//새로운 Item 생성
 			if(tickCounter == 5)
 			{
-				notEatenItems.Add(CreateNewFood());
+				uneatenItems.Add(CreateNewFood());
 			}
 
 			if(tickCounter == 10)
 			{
-				notEatenItems.Add(CreateNewItem());
+				uneatenItems.Add(CreateNewItem());
 
 				tickCounter = 0;
 			}
 		}
 
-		public void ChkEatableAndSetEffect()
+		public void ChkEatenAndSetEffect()
 		{
-			for(int i = 0; i < notEatenItems.Count; i++)
+			for(int i = 0; i < uneatenItems.Count; i++)
 			{
-				var current = notEatenItems[i];
+				var current = uneatenItems[i];
 
 				if (game.Snake.Head.Pos == current.Pos)
 				{
 					SetEffect(current.Idx);
 					
-					if(current.EffectLifeSpan > 0) //지속 효과일 떄만
+					if(current.EffectLifeSpan > 0) //지속 효과일 떄만 eatenItems에 추가한다.
 					{
 						eatenItems.Add(current);
-						notEatenItems.Remove(current);
 					}
-				}
 
-				break;
+					uneatenItems.Remove(current);
+
+					break; //어차피 다른 item들과 위치가 겹칠 리 없음
+				}
 			}
 		}
 
 		public bool IsOnItems(Coord pos)
 		{
-			foreach(var item in notEatenItems)
+			foreach(var item in uneatenItems)
 			{
 				if(item.Pos == pos)
 				{
@@ -142,6 +143,28 @@ namespace SnakeGame.Model
 					game.Snake.CutTail(5);
 					game.AddScore(50);
 					break;
+				case ItemIdx.FoodBomb:
+					for(int i = 0; i < 5; i++)
+					{
+						CreateNewFood();
+					}
+					break;
+				case ItemIdx.ItemBomb:
+					for (int i = 0; i < 5; i++)
+					{
+						CreateNewItem();
+					}
+					break;
+				case ItemIdx.ClearItemsOnBoard:
+					uneatenItems.Clear();
+					break;
+				case ItemIdx.ResetAllItems:
+					foreach(var item in eatenItems)
+					{
+						ResetEffect(item.Idx);
+					}
+					eatenItems.Clear();
+					break;
 				case ItemIdx.Confusion:
 					game.Setting.IsConfusion = true;
 					break;
@@ -152,25 +175,16 @@ namespace SnakeGame.Model
 		{
 			switch(idx)
 			{
-				case ItemIdx.Food1:
-				case ItemIdx.Food2:
-				case ItemIdx.Food3:
-				case ItemIdx.Food4:
-				case ItemIdx.Food5:
-				case ItemIdx.Food6:
-				case ItemIdx.Food7:
-					break;
 				case ItemIdx.ScoreMulti2:
 					game.Setting.ScoreMultiplier /= 2;
 					break;
 				case ItemIdx.ScoreMulti4:
 					game.Setting.ScoreMultiplier /= 4;
 					break;
-				case ItemIdx.TailCut3:
-				case ItemIdx.TailCut5:
-					break;
 				case ItemIdx.Confusion:
 					game.Setting.IsConfusion = false;
+					break;
+				default: //Food1 ~ Food7, TailCut3, TailCut5, FoodBomb, ItemBomb, ClearItemsOnBoard, ResetAllItems
 					break;
 			}
 		}
@@ -217,11 +231,11 @@ namespace SnakeGame.Model
 		{
 			Random rand = new Random();
 
-			int probability = rand.Next(0, 5);
+			int probability = rand.Next(0, 9);
 
 			Coord newPos = game.GetRandomEmptyPos();
-
-			switch(probability)
+			
+			switch (probability)
 			{
 				case 0:
 					return new Item(ItemIdx.ScoreMulti2, newPos, 50, 20);
@@ -232,6 +246,14 @@ namespace SnakeGame.Model
 				case 3:
 					return new Item(ItemIdx.TailCut5, newPos, 20, 20);
 				case 4:
+					return new Item(ItemIdx.FoodBomb, newPos, 50, 0);
+				case 5:
+					return new Item(ItemIdx.ItemBomb, newPos, 50, 0);
+				case 6:
+					return new Item(ItemIdx.ClearItemsOnBoard, newPos, 50, 0);
+				case 7:
+					return new Item(ItemIdx.ResetAllItems, newPos, 50, 0);
+				case 8:
 					return new Item(ItemIdx.Confusion, newPos, 50, 0);
 				default:
 					throw new Exception("wrong creation of item");

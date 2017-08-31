@@ -12,7 +12,6 @@ namespace SnakeGame.Model
 		public int BoardHeight { get; private set; }
 		public bool IsInfBoard { get; private set; }
 		public int ScoreMultiplier { get; set; }
-		public int SnakeTick { get; set; }
 		public bool IsConfusion { get; set; }
 
 		public GameSetting(int boardWidth, int boardHeight, bool isInfBoard)
@@ -22,7 +21,6 @@ namespace SnakeGame.Model
 			IsInfBoard = isInfBoard;
 
 			ScoreMultiplier = 1;
-			SnakeTick = 10;
 			IsConfusion = false;
 		}
 	}
@@ -51,7 +49,7 @@ namespace SnakeGame.Model
 
 		public void Tick()
 		{
-			manager.Tick();
+			manager.ReduceLifeSpanAndCreateNewItem();
 			
 			snake.Move();
 
@@ -65,7 +63,7 @@ namespace SnakeGame.Model
 			AddScore(1);
 
 			//Eaten 검사 및 처리
-			manager.ChkEatableAndSetEffect();
+			manager.ChkEatenAndSetEffect();
 		}
 
 		public void MoveSnakeUp()

@@ -12,7 +12,8 @@ namespace SnakeGame.Model
 		Food1, Food2, Food3, Food4, Food5, Food6, Food7,
 
 		//Item
-		ScoreMulti2, ScoreMulti4, TailCut3, TailCut5,
+		ScoreMulti2, ScoreMulti4, TailCut3, TailCut5, FoodBomb, ItemBomb,
+		ClearItemsOnBoard, ResetAllItems,
 
 		//debuf
 		Confusion, 
